@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ocarina del Tiempo - SEA 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Quicksand:wght@500;700&display=swap');
+
+        :root { 
+            --zelda-blue: #16396e; 
+            --gold: #f1c40f; 
+            --bg-dark: #070a10; 
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: var(--bg-dark);
+            color: #fff;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden; 
+            touch-action: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Cabecera */
+        .header-ui {
+            position: absolute; top: 0; left: 0; width: 100%; height: 90px;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 4px solid var(--gold); z-index: 100;
+            padding: 0 5%; box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .header-logo { height: 65px; object-fit: contain; }
+        
+        .header-center { text-align: center; color: #111; flex-grow: 1; }
+        .header-center h1 { margin: 0; font-family: 'Bungee', cursive; font-size: clamp(1.2rem, 3vw, 1.8rem); color: var(--zelda-blue); }
+        .header-center p { margin: 2px 0 0 0; font-weight: 700; color: #777; font-size: 0.85rem; letter-spacing: 2px; }
+
+        /* Contenedor Sketchfab */
+        .sketchfab-embed-wrapper {
+            position: absolute;
+            top: 90px; /* Debajo de la cabecera */
+            left: 0;
+            width: 100%;
+            height: calc(100% - 90px);
+            z-index: 10;
+        }
+
+        .sketchfab-embed-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Panel de Información */
+        .info-panel {
+            position: absolute; top: 110px; right: 20px;
+            background: rgba(10, 15, 25, 0.85); border-left: 3px solid var(--gold);
+            border-radius: 12px; padding: 20px; backdrop-filter: blur(15px); z-index: 90;
+            width: 280px; max-width: 40vw;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            pointer-events: none; /* Para no interferir con el 3D */
+        }
+
+        .info-panel h2 { font-family: 'Bungee', cursive; font-size: 0.9rem; color: var(--gold); margin: 0 0 10px 0; }
+        #fact-content { font-size: 0.85rem; line-height: 1.5; color: #f0f0f0; margin: 0; }
+
+        /* Panel Musical Inferior */
+        .music-panel {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(22, 57, 110, 0.85);
+            border: 2px solid var(--gold);
+            border-radius: 50px;
+            padding: 15px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .music-hint {
+            font-family: 'Bungee', cursive;
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .holes-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .virtual-hole {
+            width: 40px;
+            height: 40px;
+            background: #111;
+            border: 3px solid var(--silver);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,1), 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .virtual-hole:active, .virtual-hole.playing {
+            background: var(--gold);
+            border-color: #fff;
+            box-shadow: 0 0 15px var(--gold);
+            transform: scale(0.9);
+        }
+
+        @media (max-width: 768px) {
+            .info-panel { top: 100px; right: 50%; transform: translateX(50%); width: 85vw; max-width: none; border-left: none; border-top: 3px solid var(--gold); }
+            .music-panel { bottom: 15px; width: 90%; box-sizing: border-box; }
+            .virtual-hole { width: 35px; height: 35px; }
+        }
+
+    </style>
+</head>
+<body>
+
+<header class="header-ui">
+    <img src="logo2.jpg" class="header-logo" alt="Escuela Santa Eugenia" onerror="this.style.opacity='0'">
+    <div class="header-center">
+        <h1>OCARINA DEL TIEMPO</h1>
+        <p>Modelo Interactivo • SEA 2026</p>
+    </div>
+    <img src="logo_header.png" class="header-logo" alt="SEA" onerror="this.style.opacity='0'">
+</header>
+
+<!-- Contenedor del modelo de Sketchfab -->
+<div class="sketchfab-embed-wrapper">
+    <iframe title="Ocarina of Time" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/40ab5c7438374647b1c86245019f73aa/embed?autostart=1&ui_theme=dark&dnt=1&ui_infos=0&ui_watermark=0"> </iframe>
+</div>
+
+<div class="info-panel">
+    <h2>⏳ EL INSTRUMENTO LEGENDARIO</h2>
+    <p id="fact-content">Cargando datos...</p>
+</div>
+
+<!-- Panel para tocar la ocarina -->
+<div class="music-panel">
+    <p class="music-hint">TOCA LOS AGUJEROS VIRTUALES</p>
+    <div class="holes-container">
+        <!-- Notas: Re, Mi, Fa, Sol, La, Si -->
+        <div class="virtual-hole" onpointerdown="playNote(587.33, this)"></div>
+        <div class="virtual-hole" onpointerdown="playNote(659.25, this)"></div>
+        <div class="virtual-hole" onpointerdown="playNote(698.46, this)"></div>
+        <div class="virtual-hole" onpointerdown="playNote(783.99, this)"></div>
+        <div class="virtual-hole" onpointerdown="playNote(880.00, this)"></div>
+        <div class="virtual-hole" onpointerdown="playNote(987.77, this)"></div>
+    </div>
+</div>
+
+<script>
+/** GESTIÓN DE CONTENIDOS **/
+const infoFacts = [
+    "Diseño Legendario: Estás observando un modelo 3D detallado de la Ocarina del Tiempo, la pieza más icónica de la cultura pop.",
+    "Cerámica Azul: Se elabora con arcilla esmaltada de un profundo azul cobalto, que le otorga una resonancia cristalina.",
+    "La Trifuerza: El emblema dorado grabado en el cuello representa poder, sabiduría y valor.",
+    "Acústica de Helmholtz: A diferencia de la flauta, el tono depende del volumen interno y del área total destapada, produciendo un sonido purísimo."
+];
+
+let factIdx = 0;
+function rotateFacts() {
+    const el = document.getElementById('fact-content');
+    if(!el) return;
+    el.style.opacity = 0;
+    setTimeout(() => {
+        el.innerText = infoFacts[factIdx];
+        el.style.opacity = 1;
+        factIdx = (factIdx + 1) % infoFacts.length;
+    }, 400);
+}
+rotateFacts();
+setInterval(rotateFacts, 8000);
+
+/** MOTOR DE AUDIO NEXT-GEN **/
+let audioCtx = null;
+function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+}
+
+function playNote(freq, element) {
+    try {
+        const ctx = getAudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+        
+        const startTime = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc.type = 'sine'; // Tono de flauta/ocarina
+        osc.frequency.setValueAtTime(freq, startTime);
+        
+        // Vibrato realista
+        const lfo = ctx.createOscillator();
+        const lfoGain = ctx.createGain();
+        lfo.frequency.value = 5.5; 
+        lfoGain.gain.value = freq * 0.015; 
+        lfo.connect(lfoGain);
+        lfoGain.connect(osc.frequency);
+        lfo.start(startTime);
+
+        // Envolvente acústica
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.5, startTime + 0.05); 
+        gain.gain.setTargetAtTime(0.3, startTime + 0.2, 0.4); 
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 1.2); 
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 1.5);
+        lfo.stop(startTime + 1.5);
+
+        // Feedback Visual en los botones
+        if (element) {
+            element.classList.add('playing');
+            setTimeout(() => { element.classList.remove('playing'); }, 150);
+        }
+    } catch(e) {
+        console.warn("Audio bloqueado por el navegador.", e);
+    }
+}
+
+// Inicializar audio de manera segura
+document.body.addEventListener('pointerdown', () => {
+    getAudioCtx();
+}, { once: true });
+
+</script>
+</body>
+</html>
